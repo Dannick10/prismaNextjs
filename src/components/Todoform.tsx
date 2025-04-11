@@ -3,7 +3,7 @@
 import { updateTodo } from "@/app/actions";
 import { useFormState } from "react-dom";
 
-const TodoForm = ({ todo }) => {
+const TodoForm = ({ todo }: any) => {
   const [formState, action] = useFormState(updateTodo, { errors: "" });
 
   return (
