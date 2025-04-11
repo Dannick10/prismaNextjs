@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
+
+  await new Promise((a) => setTimeout(a,2000))
+
   const todos = await db.todo.findMany();
 
   return (
@@ -26,13 +29,13 @@ export default async function Home() {
               </div>
               <div className="flex space-x-2 mt-3">
                 <Link
-                  href={`/todos/${todo.id}`}
+                  href={`/todo/${todo.id}`}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
                   Visualizar
                 </Link>
                 <Link
-                  href={`/todos/${todo.id}/edit/`}
+                  href={`/todo/${todo.id}/edit/`}
                   className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
                 >
                   Editar
