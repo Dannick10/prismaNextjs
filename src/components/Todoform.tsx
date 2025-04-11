@@ -3,7 +3,7 @@
 import { updateTodo } from "@/app/actions";
 import { useFormState } from "react-dom";
 
-const TodoForm = ({ todo }: any) => {
+const TodoForm = ({ todo }) => {
   const [formState, action] = useFormState(updateTodo, { errors: "" });
 
   return (
@@ -20,7 +20,7 @@ const TodoForm = ({ todo }: any) => {
       )}
 
       <input type="hidden" name="id" defaultValue={todo.id} />
-
+  
       <label
         htmlFor="titulo"
         className="block text-sm font-medium text-gray-700"

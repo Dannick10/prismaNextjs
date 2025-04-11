@@ -2,24 +2,13 @@ import { db } from "@/db";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { deleteTodo } from "./actions";
 
 export default async function Home() {
 
   await new Promise((a) => setTimeout(a,2000))
 
   const todos = await db.todo.findMany();
-
-  async function deleteTodo(formData: FormData) {
-      "use server"
-
-      const id = Number(formData.get("id"))
-
-      await db.todo.delete({
-        where: {id }
-      })
-
-      redirect("/")
-  }
 
   return (
     <div className="container mx-auto p-4">
