@@ -1,4 +1,5 @@
 import { db } from "@/db";
+import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,6 +8,18 @@ export default async function Home() {
   await new Promise((a) => setTimeout(a,2000))
 
   const todos = await db.todo.findMany();
+
+  async function deleteTodo(formData: FormData) {
+      "use server"
+
+      const id = Number(formData.get("id"))
+
+      await db.todo.delete({
+        where: {id }
+      })
+
+      redirect("/")
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -43,7 +56,7 @@ export default async function Home() {
                 {/* <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                   Excluir
                 </button> */}
-                <form>
+                <form action={deleteTodo}>
                   <input type="hidden" name="id" value={todo.id} />
                   <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                     Excluir

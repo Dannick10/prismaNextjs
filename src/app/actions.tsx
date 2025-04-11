@@ -4,8 +4,8 @@ import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function deleteTodo(formData: any) {
-  const id = parseInt(formData.get("id"));
+export async function deleteTodo(formData: FormData): Promise<void> {
+  const id = parseInt(formData.get("id") as string);
 
   await db.todo.delete({
     where: { id },
@@ -16,10 +16,14 @@ export async function deleteTodo(formData: any) {
   redirect("/");
 }
 
-export async function addTodo(formData: any) {
+export async function addTodo(formData: FormData): Promise<void> {
   const titulo = formData.get("titulo");
   const descricao = formData.get("descricao");
   const status = "pendente";
+
+  if (typeof titulo !== "string" || typeof descricao !== "string") {
+    throw new Error("Título e descrição são obrigatórios.");
+  }
 
   const todo = await db.todo.create({
     data: {
@@ -45,10 +49,22 @@ export async function findTodoById(id: number) {
   return todo;
 }
 
-export async function updateTodo(formState: any, formData: any) {
-  const id = parseInt(formData.get("id"));
+export async function updateTodo(
+  formState: formState,
+  formData: FormData
+): Promise<any> {
+  const id = parseInt(formData.get("id") as string);
   const titulo = formData.get("titulo");
   const descricao = formData.get("descricao");
+
+  if (
+    !titulo ||
+    !descricao ||
+    typeof titulo !== "string" ||
+    typeof descricao !== "string"
+  ) {
+    throw new Error("Título e descrição são obrigatórios.");
+  }
 
   if (titulo.length < 5) {
     return {
@@ -73,8 +89,8 @@ export async function updateTodo(formState: any, formData: any) {
   redirect("/");
 }
 
-export async function toggleTodoStatus(formData: any) {
-  const todoId = parseInt(formData.get("id"));
+export async function toggleTodoStatus(formData: FormData) {
+  const todoId = parseInt(formData.get("id") as string);
 
   // Busca o todo com o ID fornecido.
   const todo = await db.todo.findUnique({

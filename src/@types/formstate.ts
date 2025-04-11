@@ -1,0 +1,3 @@
+type formState = {
+    erros?: string
+}
